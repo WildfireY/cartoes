@@ -12,5 +12,5 @@ import com.cartoes.api.entities.Transacao;
 @Transactional(readOnly = true)
 public interface TransacaoRepository extends JpaRepository<Transacao, Integer> {
     @Query("SELECT ta FROM Transacao ta WHERE ta.cartao.id = :cartaoId")
-    List<Transacao> findByClienteId(@Param("cartaoId") int cartaoId);
+    List<Transacao> findByCartaoId(@Param("cartaoId") int cartaoId);
 }
