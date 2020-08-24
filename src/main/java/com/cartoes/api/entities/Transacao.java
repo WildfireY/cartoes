@@ -114,6 +114,6 @@ public class Transacao implements Serializable {
 	public String toString() {
 		return "Transacao[" + "id=" + id + "," + "dataTransacao=" + dataTransacao + "," + "cnpj=" + cnpj + ","
 				+ "valor=" + valor + "," + "qdtParcelas=" + qdtParcelas + "," + "juros=" + juros + "," + "cartao="
-				+ cartao + "]";
+				+ cartao.getNumero() + "]";
 	}
 }
