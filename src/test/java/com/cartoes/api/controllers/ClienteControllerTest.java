@@ -1,5 +1,6 @@
 package com.cartoes.api.controllers;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,10 +62,13 @@ public class ClienteControllerTest {
 		BDDMockito.given(clienteService.buscarPorId(Mockito.anyInt())).willReturn(Optional.of(cliente));
 
 		mvc.perform(MockMvcRequestBuilders.get("/api/cliente/1").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andExpect(jsonPath("$.dados.id").value(cliente.getId()))
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(jsonPath("$.dados.id").value(cliente.getId()))
 				.andExpect(jsonPath("$.dados.nome").value(cliente.getNome()))
 				.andExpect(jsonPath("$.dados.cpf").value(cliente.getCpf()))
-				.andExpect(jsonPath("$.dados.uf").value(cliente.getUf())).andExpect(jsonPath("$.erros").isEmpty());
+				.andExpect(jsonPath("$.dados.uf").value(cliente.getUf()))
+				.andExpect(jsonPath("$.erros").isEmpty());
 
 	}
 
@@ -89,10 +93,12 @@ public class ClienteControllerTest {
 		BDDMockito.given(clienteService.buscarPorCpf(Mockito.anyString())).willReturn(Optional.of(cliente));
 
 		mvc.perform(MockMvcRequestBuilders.get("/api/cliente/cpf/05887098082").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andExpect(jsonPath("$.dados.id").value(cliente.getId()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.dados.id").value(cliente.getId()))
 				.andExpect(jsonPath("$.dados.nome").value(cliente.getNome()))
 				.andExpect(jsonPath("$.dados.cpf").value(cliente.getCpf()))
-				.andExpect(jsonPath("$.dados.uf").value(cliente.getUf())).andExpect(jsonPath("$.erros").isEmpty());
+				.andExpect(jsonPath("$.dados.uf").value(cliente.getUf()))
+				.andExpect(jsonPath("$.erros").isEmpty());
 
 	}
 
@@ -114,7 +120,7 @@ public class ClienteControllerTest {
 
 		Cliente cliente = CriarClienteTestes();
 		ClienteDto objEntrada = ConversaoUtils.Converter(cliente);
-
+		
 		String json = new ObjectMapper().writeValueAsString(objEntrada);
 
 		BDDMockito.given(clienteService.salvar(Mockito.any(Cliente.class))).willReturn(cliente);
