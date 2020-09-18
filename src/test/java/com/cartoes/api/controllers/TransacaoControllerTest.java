@@ -105,7 +105,6 @@ public class TransacaoControllerTest {
 			.andExpect(jsonPath("$.dados.[0].qdtParcelas").value(transacao.getQdtParcelas()))
 			.andExpect(jsonPath("$.dados.[0].juros").value(transacao.getJuros()))
 			.andExpect(jsonPath("$.dados.[0].cartaoNumero").value(transacao.getCartao().getNumero()))
-			//.andExpect(jsonPath("$.dados.[0].dataTransacao").value(transacao.getDataTransacao()))
 			.andExpect(jsonPath("$.erros").isEmpty());
 
 	}
