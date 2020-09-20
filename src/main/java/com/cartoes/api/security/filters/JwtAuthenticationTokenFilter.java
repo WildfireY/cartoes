@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.cartoes.api.security.utils.JwtTokenUtil;
+import com.cartoes.api.services.UsuarioService;
 
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 	private static final String AUTH_HEADER = "Authorization";
@@ -21,6 +22,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 	private UserDetailsService userDetailsService;
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -37,6 +40,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 						userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
+				
+				usuarioService.atualizarDataAcesso(username);
 			}
 		}
 		chain.doFilter(request, response);

@@ -1,6 +1,7 @@
 package com.cartoes.api.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.cartoes.api.entities.Regra;
 import com.cartoes.api.entities.Usuario;
@@ -131,5 +133,18 @@ public class UsuarioService {
 			throw new ConsistenciaException("A senha atual informada não é válida.");
 		}
 		usuarioRepository.alterarSenhaUsuario(SenhaUtils.gerarHash(novaSenha), id);
+	}
+	
+	public void atualizarDataAcesso(String cpf) {
+        Date dataAtual = new Date();
+        usuarioRepository.atualizarData(dataAtual, cpf);
+    }
+	
+	@Scheduled(fixedRate = 43200000)
+	public void desativaUsuario(){
+		
+		usuarioRepository.desativarUsuariosInativos();
+   		log.info("Service: Desativando usuarios inativos");
+		
 	}
 }
